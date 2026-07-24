@@ -1851,6 +1851,167 @@ function EvidenceList({ evidence }: { evidence: ResonanceEvidence[] }) {
     </details>
   );
 }
+// ── Johari Compatibility Section ────────────────────────────────────────────────
+function JohariCompatibilitySection({ a, b }: { a: StoredSoul; b: StoredSoul }) {
+  const aPsychic = psychic(a);
+  const bPsychic = psychic(b);
+  const aDestiny = lifePath(a);
+  const bDestiny = lifePath(b);
+  const johariPsychic = johariRelation(aPsychic, bPsychic);
+  const johariDestiny = johariRelation(aDestiny, bDestiny);
+  const aPlanet = JOHARI_RELATIONS[aPsychic]?.planet || "Unknown";
+  const bPlanet = JOHARI_RELATIONS[bPsychic]?.planet || "Unknown";
+  const aDestPlanet = JOHARI_RELATIONS[aDestiny]?.planet || "Unknown";
+  const bDestPlanet = JOHARI_RELATIONS[bDestiny]?.planet || "Unknown";
+  return (
+    <div
+      style={{
+        padding: "0.85rem",
+        borderRadius: 14,
+        background: "rgba(139,92,246,0.08)",
+        border: "1px solid rgba(139,92,246,0.22)",
+        marginBottom: "0.75rem",
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "'Cinzel',serif",
+          fontSize: "0.65rem",
+          color: "#a78bfa",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          marginBottom: "0.65rem",
+        }}
+      >
+        Johari Compatibility Analysis
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
+        <div>
+          <div style={{ fontSize: "0.58rem", color: "rgba(200,180,240,0.5)", marginBottom: 4 }}>
+            Psychic Numbers
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: 6 }}>
+            <span style={{ color: "#f1d98a", fontFamily: "'Cinzel',serif", fontSize: "0.8rem", fontWeight: 700 }}>
+              {aPsychic} × {bPsychic}
+            </span>
+            <span style={{ fontSize: "0.6rem", color: barColor(johariPsychic.score), background: `${barColor(johariPsychic.score)}20`, padding: "1px 6px", borderRadius: 8 }}>
+              {johariPsychic.score}%
+            </span>
+          </div>
+          <div style={{ fontSize: "0.62rem", color: "rgba(200,180,240,0.6)" }}>
+            {aPlanet} & {bPlanet}
+          </div>
+          <div style={{ fontSize: "0.58rem", color: "rgba(200,180,240,0.4)", marginTop: 4, fontStyle: "italic" }}>
+            {johariPsychic.label}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: "0.58rem", color: "rgba(200,180,240,0.5)", marginBottom: 4 }}>
+            Destiny Numbers
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: 6 }}>
+            <span style={{ color: "#f1d98a", fontFamily: "'Cinzel',serif", fontSize: "0.8rem", fontWeight: 700 }}>
+              {aDestiny} × {bDestiny}
+            </span>
+            <span style={{ fontSize: "0.6rem", color: barColor(johariDestiny.score), background: `${barColor(johariDestiny.score)}20`, padding: "1px 6px", borderRadius: 8 }}>
+              {johariDestiny.score}%
+            </span>
+          </div>
+          <div style={{ fontSize: "0.62rem", color: "rgba(200,180,240,0.6)" }}>
+            {aDestPlanet} & {bDestPlanet}
+          </div>
+          <div style={{ fontSize: "0.58rem", color: "rgba(200,180,240,0.4)", marginTop: 4, fontStyle: "italic" }}>
+            {johariDestiny.label}
+          </div>
+        </div>
+      </div>
+      <div style={{ marginTop: "0.6rem", paddingTop: "0.6rem", borderTop: "1px solid rgba(139,92,246,0.15)" }}>
+        <p style={{ fontSize: "0.68rem", color: "rgba(231,221,255,0.75)", lineHeight: 1.55, margin: 0 }}>
+          <b style={{ color: "#a78bfa" }}>Johari Insight:</b> {johariPsychic.note} {johariDestiny.note}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── Combined Weather Card ────────────────────────────────────────────────────────
+function CombinedWeatherCard({ a, b }: { a: StoredSoul; b: StoredSoul }) {
+  const year = new Date().getFullYear();
+  const aPY = computePersonalYearNumber(a.day, a.month, year);
+  const bPY = computePersonalYearNumber(b.day, b.month, year);
+  const aNextPY = computePersonalYearNumber(a.day, a.month, year + 1);
+  const bNextPY = computePersonalYearNumber(b.day, b.month, year + 1);
+  const aToday = generateDailyForecast(a.day, a.month, a.year);
+  const bToday = generateDailyForecast(b.day, b.month, b.year);
+  const aSeason = relationshipSeason(aPY);
+  const bSeason = relationshipSeason(bPY);
+  const seasonsMatch = aSeason === bSeason;
+  return (
+    <div
+      style={{
+        padding: "0.85rem",
+        borderRadius: 14,
+        background: "rgba(103,232,249,0.05)",
+        border: "1px solid rgba(103,232,249,0.18)",
+        marginBottom: "0.75rem",
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "'Cinzel',serif",
+          fontSize: "0.65rem",
+          color: "#67e8f9",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          marginBottom: "0.65rem",
+        }}
+      >
+        Combined Weather
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", marginBottom: "0.65rem" }}>
+        <div style={{ padding: "0.55rem", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ fontSize: "0.58rem", color: "rgba(200,180,240,0.5)", marginBottom: 4 }}>{a.name}</div>
+          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+            <span style={{ fontSize: "0.65rem", color: "#f1d98a", fontFamily: "'Cinzel',serif" }}>PY {aPY}</span>
+            <span style={{ fontSize: "0.55rem", color: barColor(aPY * 10), background: `${barColor(aPY * 10)}20`, padding: "1px 5px", borderRadius: 6, textTransform: "capitalize" }}>{aSeason}</span>
+          </div>
+          <div style={{ fontSize: "0.55rem", color: "rgba(200,180,240,0.5)", marginTop: 4 }}>PD {aToday.personalDay}</div>
+        </div>
+        <div style={{ padding: "0.55rem", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ fontSize: "0.58rem", color: "rgba(200,180,240,0.5)", marginBottom: 4 }}>{b.name}</div>
+          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+            <span style={{ fontSize: "0.65rem", color: "#f1d98a", fontFamily: "'Cinzel',serif" }}>PY {bPY}</span>
+            <span style={{ fontSize: "0.55rem", color: barColor(bPY * 10), background: `${barColor(bPY * 10)}20`, padding: "1px 5px", borderRadius: 6, textTransform: "capitalize" }}>{bSeason}</span>
+          </div>
+          <div style={{ fontSize: "0.55rem", color: "rgba(200,180,240,0.5)", marginTop: 4 }}>PD {bToday.personalDay}</div>
+        </div>
+      </div>
+      <div
+        style={{
+          padding: "0.5rem 0.6rem",
+          borderRadius: 10,
+          background: seasonsMatch ? "rgba(52,211,153,0.1)" : "rgba(251,191,36,0.08)",
+          border: `1px solid ${seasonsMatch ? "rgba(52,211,153,0.25)" : "rgba(251,191,36,0.22)"}`,
+        }}
+      >
+        <div style={{ fontSize: "0.58rem", color: seasonsMatch ? "#34d399" : "#fbbf24", fontFamily: "'Cinzel',serif", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 3 }}>
+          {seasonsMatch ? "✓ Seasonal Alignment" : "⚡ Different Seasons"}
+        </div>
+        <div style={{ fontSize: "0.62rem", color: "rgba(231,221,255,0.72)", lineHeight: 1.5 }}>
+          {seasonsMatch
+            ? `Both are in ${aSeason} season — life is asking similar things from each person.`
+            : `${a.name} is in ${aSeason} while ${b.name} is in ${bSeason}. Different speeds and priorities may require conscious adjustment.`
+          }
+        </div>
+      </div>
+      <div style={{ marginTop: "0.6rem", fontSize: "0.55rem", color: "rgba(200,180,240,0.4)", textAlign: "center" }}>
+        Next Year: {a.name} PY {aNextPY} · {b.name} PY {bNextPY}
+      </div>
+    </div>
+  );
+}
+
+// ── Simplified Soul Resonance Panel ────────────────────────────────────────────
 export function SoulResonancePanel({ history }: { history: StoredSoul[] }) {
   const famousBank = React.useMemo(() => getFamousSoulBank(), []);
   const getId = React.useCallback((s: StoredSoul | FamousSoulVitals) => s.id || `${s.name}-${s.day}-${s.month}-${s.year}`, []);
@@ -1865,21 +2026,13 @@ export function SoulResonancePanel({ history }: { history: StoredSoul[] }) {
   const a = options.find((s) => getId(s) === aId) || history[0] || famousBank[0];
   const b = options.find((s) => getId(s) === bId) || options.find((s) => getId(s) !== getId(a));
   if (!a || !b || getId(a) === getId(b)) return null;
-  const analysis = buildRelationshipAnalysis(a, b);
-  // Not memoized: `a`/`b` are only resolved after the early-return checks
-  // above, so a hook here would violate the Rules of Hooks. The underlying
-  // computation is cheap arithmetic plus a filter over the famous-birthdays
-  // list, so recomputing on each render of this panel is fine.
-  const va = buildSoulVitals(a);
-  const vb = buildSoulVitals(b);
-  const resonance: SoulResonanceReport = generateSoulResonance(va, vb);
-  resonance.famousTwins = getFamousTwins(va, vb);
   return (
     <Panel
       title="Soul Resonance"
-      subtitle="A synthesized relationship analysis, not a simple compatibility calculator"
+      subtitle="Johari compatibility & combined weather analysis"
       icon={<Users size={18} />}
     >
+      {/* Dropdowns */}
       <div
         style={{
           display: "grid",
@@ -1929,187 +2082,10 @@ export function SoulResonancePanel({ history }: { history: StoredSoul[] }) {
           </optgroup>
         </select>
       </div>
-      <div
-        style={{
-          padding: "0.9rem",
-          borderRadius: 16,
-          background:
-            "linear-gradient(135deg, rgba(212,175,55,0.12), rgba(139,92,246,0.08))",
-          border: "1px solid rgba(212,175,55,0.22)",
-          marginBottom: "0.9rem",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "'Cinzel',serif",
-            fontSize: "0.86rem",
-            color: "#f1d98a",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            fontWeight: 800,
-          }}
-        >
-          {analysis.archetype}
-        </div>
-        <div
-          style={{
-            fontSize: "0.68rem",
-            color: "rgba(200,180,240,0.58)",
-            marginTop: 3,
-          }}
-        >
-          {analysis.archetypeSubtitle} · Confidence: {analysis.confidence}
-        </div>
-        <p
-          style={{
-            color: "rgba(231,221,255,0.86)",
-            fontSize: "0.82rem",
-            lineHeight: 1.7,
-            margin: "0.75rem 0 0",
-          }}
-        >
-          {analysis.essence}
-        </p>
-      </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "0.7rem",
-          marginBottom: "0.95rem",
-        }}
-      >
-        <div
-          style={{
-            padding: "0.72rem",
-            borderRadius: 14,
-            background: "rgba(255,255,255,0.035)",
-            border: "1px solid rgba(255,255,255,0.07)",
-          }}
-        >
-          <Meter label="Emotional Harmony" score={analysis.scores.emotional} />
-          <Meter label="Communication" score={analysis.scores.communication} />
-          <Meter label="Trust" score={analysis.scores.trust} />
-          <Meter label="Passion" score={analysis.scores.passion} />
-        </div>
-        <div
-          style={{
-            padding: "0.72rem",
-            borderRadius: 14,
-            background: "rgba(255,255,255,0.035)",
-            border: "1px solid rgba(255,255,255,0.07)",
-          }}
-        >
-          <Meter label="Purpose Alignment" score={analysis.scores.purpose} />
-          <Meter label="Growth Potential" score={analysis.scores.growth} />
-          <Meter label="Longevity" score={analysis.scores.longevity} />
-          <Meter label="Conflict Recovery" score={analysis.scores.recovery} />
-        </div>
-      </div>
-      <StoryCard title="Overall Essence" text={analysis.essence} />
-      <StoryCard
-        title="Emotional Chemistry"
-        text={analysis.sections.emotional}
-      />
-      <StoryCard title="Mental Compatibility" text={analysis.sections.mental} />
-      <StoryCard
-        title="Life Purpose Alignment"
-        text={analysis.sections.purpose}
-      />
-      <StoryCard
-        title="Conflict Pattern"
-        text={analysis.sections.conflict}
-        tone="rose"
-      />
-      <StoryCard
-        title="Missing Energy Completion"
-        text={analysis.sections.missingEnergy}
-      />
-      <StoryCard
-        title="Hidden Strengths"
-        text={analysis.sections.hiddenStrength}
-      />
-      <StoryCard
-        title="Current Personal-Year Climate"
-        text={analysis.sections.timing}
-        tone="violet"
-      />
-      <div style={{ margin: "0.9rem 0" }}>
-        <div
-          style={{
-            fontFamily: "'Cinzel',serif",
-            color: "#d4af37",
-            fontSize: "0.62rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "0.55rem",
-          }}
-        >
-          Relationship Timeline
-        </div>
-        <div style={{ display: "grid", gap: "0.55rem" }}>
-          {analysis.timeline.map((t) => (
-            <div
-              key={t.title}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1.2rem 1fr",
-                gap: "0.5rem",
-              }}
-            >
-              <div
-                style={{
-                  width: 12,
-                  height: 12,
-                  borderRadius: "50%",
-                  marginTop: 5,
-                  background:
-                    t.tone === "rose"
-                      ? "#fb7185"
-                      : t.tone === "green"
-                        ? "#86efac"
-                        : t.tone === "violet"
-                          ? "#a78bfa"
-                          : "#d4af37",
-                  boxShadow: "0 0 12px currentColor",
-                }}
-              />
-              <div
-                style={{
-                  padding: "0.62rem 0.7rem",
-                  borderRadius: 12,
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  background: "rgba(255,255,255,0.035)",
-                }}
-              >
-                <b
-                  style={{
-                    color: "rgba(248,250,252,0.9)",
-                    fontSize: "0.76rem",
-                  }}
-                >
-                  {t.title}
-                </b>
-                <p
-                  style={{
-                    margin: "0.25rem 0 0",
-                    color: "rgba(231,221,255,0.76)",
-                    fontSize: "0.72rem",
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {t.text}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <StoryCard title="Future Evolution" text={analysis.sections.future} />
-      <StoryCard title="Advice" text={analysis.sections.advice} tone="green" />
-      <StoryCard title="Final Synthesis" text={analysis.sections.final} />
-      <ExtendedResonanceLayers report={resonance} />
-      <EvidenceList evidence={analysis.evidence} />
+      {/* Johari Compatibility Section */}
+      <JohariCompatibilitySection a={a} b={b} />
+      {/* Combined Weather Card */}
+      <CombinedWeatherCard a={a} b={b} />
     </Panel>
   );
 }
